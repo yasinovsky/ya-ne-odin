@@ -6,7 +6,19 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit1e4698e1dbba24f37a3cc07be44a0d20
 {
+    public static $files = array (
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'T' =>
+        array (
+            'Twig\\' => 5,
+        ),
+        'S' =>
+        array (
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+        ),
         'K' =>
         array (
             'Klein\\' => 6,
@@ -14,9 +26,27 @@ class ComposerStaticInit1e4698e1dbba24f37a3cc07be44a0d20
     );
 
     public static $prefixDirsPsr4 = array (
+        'Twig\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/twig/twig/src',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
         'Klein\\' =>
         array (
             0 => __DIR__ . '/..' . '/klein/klein/src/Klein',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'T' =>
+        array (
+            'Twig_' =>
+            array (
+                0 => __DIR__ . '/..' . '/twig/twig/lib',
+            ),
         ),
     );
 
@@ -29,6 +59,7 @@ class ComposerStaticInit1e4698e1dbba24f37a3cc07be44a0d20
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit1e4698e1dbba24f37a3cc07be44a0d20::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit1e4698e1dbba24f37a3cc07be44a0d20::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit1e4698e1dbba24f37a3cc07be44a0d20::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit1e4698e1dbba24f37a3cc07be44a0d20::$classMap;
 
         }, null, ClassLoader::class);
