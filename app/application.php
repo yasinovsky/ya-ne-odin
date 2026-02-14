@@ -15,7 +15,7 @@ class Application {
      * @return string
      */
     public static function version() {
-        $value = '0.0.0';
+        $value = '0.0.1';
         return $value;
     }
 
