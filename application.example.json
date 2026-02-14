@@ -1,4 +1,15 @@
 {
+    "database": {
+        "master": {
+            "driver": "mysql",
+            "host": "localhost",
+            "database": "yno_stage",
+            "username": "root",
+            "password": "",
+            "charset": "utf8",
+            "collation": "utf8_general_ci"
+        }
+    },
     "environment": {
         "production": false,
         "hostname": "yno.stage.yaseek.net",

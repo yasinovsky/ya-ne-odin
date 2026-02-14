@@ -1,5 +1,6 @@
 <?php namespace Yaseek\YNO\App;
 
+use Yaseek\YNO\Core\Database;
 use Yaseek\YNO\Core\Logger;
 use Yaseek\YNO\Core\Helper;
 use Yaseek\YNO\Core\Twig;
@@ -129,6 +130,72 @@ class Application {
             }
         }
         return $result;
+    }
+
+
+
+    /**
+     * Соединяется с базой данных
+     * @param string $alias Алиас базы данных
+     * @return \Illuminate\Database\Connection
+     * @throws \Exception
+     */
+    private static function _get_db_connection($alias) {
+        $config = self::config();
+        try {
+            // Получаем объект работы с СУБД \Illuminate\Database\Connection
+            $connection = Database::getConnection($config->database($alias));
+        }
+        catch (\Exception $e) {
+            self::logger()->error($e->getMessage());
+            throw $e; // Дальше нет никакого смысла
+        }
+        // На боевых серверах нам не нужен лог запросов - экономим время и память
+        if ($config->environment('production')) { $connection->disableQueryLog(); }
+        return $connection;
+    }
+
+
+
+    /**
+     * Возвращает объект для работы с БД
+     * @param bool $check Проверять соединение
+     * @param string $alias Алиас базы данных
+     * @return \Illuminate\Database\Connection
+     * @throws \Exception
+     */
+    public static function database($check = false, $alias = 'master') {
+        static $result = array();
+        if (!array_key_exists($alias, $result)) {
+            /** @var \Illuminate\Database\Connection[] $result */
+            $result[$alias] = self::_get_db_connection($alias);
+        }
+        if ($check) {
+            $attempts = 0; // Номер текущей попытки
+            $success = false; // Был ли достигнут успех?
+            while ($attempts++ < 4) {
+                try {
+                    if (!array_key_exists($alias, $result)) { // Проверим ключ
+                        throw new \Exception('Key "' . $alias . '" not exists');
+                    }
+                    $result[$alias]->getPdo()->query('select 1');
+                    $success = true; // Запрос был успешно выполнен
+                    break; // Прерываемся - соединение еще живое!
+                }
+                catch (\Exception $e) {
+                    sleep($attempts * 2); unset($result[$alias]);
+                    try { $result[$alias] = self::_get_db_connection($alias); }
+                    catch (\Exception $e) { continue; } // На следующий виток!
+                }
+            }
+            if ($success === false) {
+                throw new \Exception( // Проверим наличие ошибки
+                    isset($e) && ($e instanceof \Exception)
+                        ? $e->getMessage() : 'Cannot connect to database'
+                );
+            }
+        }
+        return $result[$alias];
     }
 
 
