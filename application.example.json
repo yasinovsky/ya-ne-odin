@@ -1,0 +1,8 @@
+{
+    "environment": {
+        "production": false,
+        "hostname": "yno.stage.yaseek.net",
+        "url": "http://yno.stage.yaseek.net",
+        "urn": "yaseek/yno"
+    }
+}

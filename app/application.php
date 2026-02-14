@@ -21,6 +21,30 @@ class Application {
 
 
     /**
+     * Возвращает конфигурацию приложения
+     * @return Config
+     * @throws \Exception
+     */
+    public static function config() {
+        static $result = null;
+        if (is_null($result)) {
+            try {
+                // Загрузим конфигурацию всего приложения из лежащего уровнем выше json-файла,
+                $file = self::$_root . DIRECTORY_SEPARATOR . pathinfo(__FILE__, PATHINFO_FILENAME)
+                    . '.' . Config::EXTENSION_JSON; // ... совпадающего по имени с этим исполняемым
+                $result = new Config($file); // Стартуем новую конфигурацию
+            }
+            catch (\Exception $e) {
+                self::logger()->error($e->getMessage());
+                throw new \Exception($e->getMessage());
+            }
+        }
+        return $result;
+    }
+
+
+
+    /**
      * Возвращает номер версии приложения
      * @return string
      */
