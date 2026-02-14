@@ -1175,7 +1175,11 @@
     "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {},
+    "platform": {
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-mysqli": "*"
+    },
     "platform-dev": {},
     "platform-overrides": {
         "php": "7.3.31"
