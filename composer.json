@@ -1,0 +1,32 @@
+{
+    "name": "yasinovsky/ya-ne-odin",
+    "description": "Anonymous messages to the school psychologist",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Victor Yasinovsky",
+            "email": "yasinovsky@gmail.com"
+        },
+        {
+            "name": "Angelica Yasinovskaya"
+        },
+        {
+            "name": "Eva Baskakova"
+        }
+    ],
+    "config": {
+        "platform": {
+            "php": "7.3.31"
+        },
+        "audit": {
+            "block-insecure": false
+        },
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
+    },
+    "require": {
+    },
+    "minimum-stability": "stable"
+}
