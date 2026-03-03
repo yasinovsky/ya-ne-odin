@@ -1,21 +1,33 @@
 {% extends "/layouts/default.twig" %}
 
 
+
 {% block content %}
 
     <div class="py-5 text-center">
         <img class="d-block mx-auto mb-4" src="/resources/logo.svg" width="100" alt="Я не один!">
         <h1 class="h2">Я не один!</h1>
-        <p class="lead">
-            Иногда бывает трудно говорить о своих чувствах вслух, задать неловкий вопрос или признаться в том, что что-то беспокоит. Это нормально.
-            Мы готовы выслушать тебя без осуждения и оценок. Напиши о том, что у тебя на душе. Ты можешь не указывать своё имя &ndash; для нас главное, чтобы тебе стало легче.
-            Мы прочитаем твоё сообщение и ответим как можно скорее!
-        </p>
-        <p class="lead"><b>Помни: ты не один!</b></p>
-    </div>
-    <div class="row">
-        <div class="col">
+        <div data-for="lead-text">
+            <p class="lead">
+                Иногда бывает трудно говорить о своих чувствах вслух, задать неловкий вопрос или признаться в том, что что-то беспокоит. Это нормально.
+                Мы готовы выслушать тебя без осуждения и оценок. Напиши о том, что у тебя на душе. Ты можешь не указывать своё имя &ndash; для нас главное, чтобы тебе стало легче.
+                Мы прочитаем твоё сообщение и ответим как можно скорее!
+            </p>
+            <p class="lead"><b>Помни: ты не один!</b></p>
         </div>
+    </div>
+
+    <div class="row mt-3" data-view="main">
+        <div class="col text-center">
+            <button class="btn btn-lg btn-outline-danger mx-3 my-3" data-for="write-message">Написать сообщение</button>
+            <button class="btn btn-lg btn-outline-success mx-3 my-3" data-for="read-message">Прочитать сообщение</button>
+        </div>
+    </div>
+
+    <div class="row mt-3" data-view="write" style="display: none;">
+    </div>
+
+    <div class="row mt-3" data-view="read" style="display: none;">
     </div>
 
 {% endblock %}
