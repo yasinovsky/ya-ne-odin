@@ -1,0 +1,42 @@
+{% extends "/base.twig" %}
+
+
+
+{% block body %}
+
+    <body class="bg-body-tertiary">
+        <div class="container">
+            <main>
+                {% block content %}{% endblock %}
+            </main>
+            <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+                <p class="mb-1">
+                    &copy; 2025&ndash;{{ 'now'|date('Y') }}
+                    Анжелика Ясиновская и Ева Баскакова
+                </p>
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <a href="/backoffice" class="text-decoration-none text-muted opacity-25">
+                            я сотрудник
+                        </a>
+                    </li>
+                </ul>
+            </footer>
+        </div>
+    </body>
+
+{% endblock %}
+
+
+
+{% block stylesheet %}
+    {{ parent() }}
+    <link href="/resources/application.css" rel="stylesheet">
+{% endblock %}
+
+
+
+{% block javascript %}
+    {{ parent() }}
+    <script src="/resources/application.js"></script>
+{% endblock %}

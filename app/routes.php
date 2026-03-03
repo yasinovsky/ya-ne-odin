@@ -17,7 +17,11 @@ $router = Application::router();
 $router->respond(
     array('GET'), '/',
     function(KRequest $request, KResponse $response, KService $service, KApp $app) use ($router) {
-        return 'Hello, World!';
+        return $app->twig->render(
+            '/pages/main.twig', array(
+                'application' => Application::getInstance(),
+            )
+        );
     }
 );
 
