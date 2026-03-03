@@ -129,9 +129,24 @@
                 messageText: this._form.find('#write-message-text'),
             };
             // Тут будем хранить описание токана для отправки сообщения
-            this._token = { value: null, signature: null, expires: null };
+            this._token = { token: null, signature: null, expires: null };
             this._refresh_token(); // Подпишем кнопку обновления токена
+            this._submit_form(); // Подпишем форму отправки сообщения
+            this._change_message(); // Подпишем изменения поля сообщения
         }
+
+        /**
+         * Отобращает или скрывает ошибку
+         * @param {String|null} message Сообщение
+         * @private
+         */
+        SectionWrite.prototype._error = function(message) {
+            const element = this._form.find('[data-for="error"]');
+            switch (message) {
+                case null: element.hide(); break;
+                default: element.html(message).show(); break;
+            }
+        };
 
         /**
          * Обрабатывает клик на кнопку "обновить токен"
@@ -143,6 +158,54 @@
                 self._elements.refreshButton.attr('disabled', true);
                 self._get_token(function() { // Новое значение
                     self._elements.refreshButton.removeAttr('disabled');
+                    self._error(null); // Скроем возможную ошибку
+                });
+            });
+        };
+
+        /**
+         * Обрабатывает изменение поля ввода сообщения
+         * @private
+         */
+        SectionWrite.prototype._change_message = function() {
+            const self = this;
+            this._elements.messageText.on('keyup', function() {
+                self._error(null); // Сбросим, если меняется текст
+            });
+        };
+
+        /**
+         * Обрабатывает отправку формы
+         * @private
+         */
+        SectionWrite.prototype._submit_form = function() {
+            const self = this;
+            const getRequest = function() {
+                let result = {}; // Сюда накопим результат!
+                const keys = ['token', 'expires', 'signature'];
+                Object.keys(keys).forEach(function(id) {
+                    result[keys[id]] = self._token[keys[id]];
+                });
+                // Ну и осталось добавить непосредственно сам текст
+                result['message'] = self._elements.messageText.val()
+                return result;
+            };
+            const successResult = function() {
+                const parent = self._form.parent();
+                const section = parent.find('[data-for="success"]');
+                section.find('[data-for="token"]').html(self._token.token);
+                self._form.hide(); section.show();
+            };
+            const button = this._form.find('button[type="submit"]');
+            this._form.submit(function(event) {
+                event.preventDefault();
+                button.attr('disabled', true);
+                self._app.api('/message/post', getRequest(), function(result, error) {
+                    button.removeAttr('disabled');
+                    switch (error) {
+                        case null: successResult(); break;
+                        default: self._error(error.message); break;
+                    }
                 });
             });
         };
@@ -158,7 +221,7 @@
                 switch (error) {
                     case null:
                         self._token = result; // Зададим значение
-                        self._elements.token.val(self._token.value);
+                        self._elements.token.val(self._token.token);
                         if (typeof callback === 'function') { callback(); }
                         break;
                     default:

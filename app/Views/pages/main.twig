@@ -28,18 +28,24 @@
         <form>
             <div class="mb-3">
                 <label for="write-message-token" class="form-label">Ключ сообщения</label>
-                <div class="input-group mb-3">
+                <div class="input-group ">
                     <input id="write-message-token" type="text" class="form-control form-control-lg" aria-describedby="change-token" disabled>
                     <button id="change-token" type="button" class="btn btn-outline-secondary">Хочу другой</button>
                 </div>
-                <div class="form-text text-danger">Пожалуйста запомни ключ, без него ты не сможешь прочитать ответ</div>
+                <div class="form-text text-success">Пожалуйста запомни ключ, без него ты не сможешь прочитать ответ</div>
             </div>
             <div class="mb-3">
                 <label for="write-message-text" class="form-label">Текст сообщения</label>
-                <textarea id="write-message-text" class="form-control" rows="4"></textarea>
+                <textarea id="write-message-text" class="form-control" rows="4" required></textarea>
+                <div class="form-text text-danger" data-for="error" style="display: none;"></div>
             </div>
             <button type="submit" class="btn btn-primary">Отправить</button>
         </form>
+        <div class="text-center" data-for="success" style="display: none;">
+            <p class="text-success">Сообщение успешно отправлено!</p>
+            <h1 class="text-danger" data-for="token"></h1>
+            <p>Пожалуйста запомни этот ключ, без него ты не сможешь прочитать ответ</p>
+        </div>
     </div>
 
     <div class="row mt-3" data-view="read" style="display: none;">

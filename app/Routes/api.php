@@ -24,4 +24,23 @@ $router->with('/api', function() use ($router) {
         }
     );
 
+    $router->with('/message', function() use ($router) {
+
+        $router->respond(
+            array('POST'), '/post',
+            function(KRequest $request, KResponse $response) {
+                $api = new Api($request, $response);
+                $api->process(function() use ($api, $request) {
+                    return Message::insert($api->getRequestParams(array(
+                        'token' => Api::TYPE_STRING,
+                        'expires' => Api::TYPE_INTEGER,
+                        'signature' => Api::TYPE_STRING,
+                        'message' => Api::TYPE_STRING,
+                    )));
+                });
+            }
+        );
+
+    });
+
 });

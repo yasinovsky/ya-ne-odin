@@ -14,11 +14,27 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+-- Dumping structure for table yno_stage.messages
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` char(36) NOT NULL,
+  `token_id` int(10) unsigned NOT NULL,
+  `value` text NOT NULL,
+  `created` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uuid` (`uuid`),
+  KEY `FK_messages_tokens` (`token_id`),
+  CONSTRAINT `FK_messages_tokens` FOREIGN KEY (`token_id`) REFERENCES `tokens` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Dumping data for table yno_stage.messages: ~0 rows (approximately)
+
 -- Dumping structure for table yno_stage.tokens
 CREATE TABLE IF NOT EXISTS `tokens` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` char(36) NOT NULL,
   `value` varchar(16) NOT NULL,
+  `active` tinyint(3) unsigned NOT NULL,
   `created` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
