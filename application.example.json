@@ -10,6 +10,17 @@
             "collation": "utf8_general_ci"
         }
     },
+    "token": {
+        "lifetime": 5400,
+        "vowels": "aeiouy",
+        "consonants": "bcdfghjklmnpqrstvwxz",
+        "syllables": 4,
+        "signature": {
+            "digest": "{%SALT%}{%VALUE%}{%EXPIRES%}",
+            "salt": "CPXXqx8iMbZ3ADqGg4yUFLlTSzIntPUFJxcfesq3z4fpzs3t8xE4dlefE043Ohoh",
+            "algorithm": "sha1"
+        }
+    },
     "environment": {
         "production": false,
         "hostname": "yno.stage.yaseek.net",

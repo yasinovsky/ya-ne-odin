@@ -13,13 +13,26 @@
          * @constructor
          */
         function ynoApplication() {
+            this._api_prefix = '/api';
         }
+
+        /**
+         * Выполняет запрос к api
+         * @param {string} url Урл запроса
+         * @param {Object} data Данные запроса
+         * @param {Function} callback Обработчик обратного вызова
+         */
+        ynoApplication.prototype.api = function(url, data, callback) {
+            $.ajax(this._api_prefix + url, { data: JSON.stringify(data), type: 'POST' })
+                .done(function(response) { callback(response.result, response.error); });
+        };
 
         /**
          * Обработчик главной страницы
          * @private
          */
         ynoApplication.prototype.main = function() {
+            const self = this;
             const buttons = {
                 read: $('[data-for="read-message"]'),
                 write: $('[data-for="write-message"]'),
@@ -37,16 +50,22 @@
                 buttons[key].css('width', '250px');
             });
             buttons.read.bind('click', function() {
+                const button = $(this); // Это шорткат
+                button.attr('disabled', true);
                 const view = $('[data-view="read"]');
-                const controller = new SectionRead(view);
+                const controller = new SectionRead(self, view);
                 controller.focus(function() {
+                    button.removeAttr('disabled');
                     leave();
-                })
+                });
             });
             buttons.write.bind('click', function() {
+                const button = $(this); // Это шорткат
+                button.attr('disabled', true);
                 const view = $('[data-view="write"]');
-                const controller = new SectionWrite(view);
+                const controller = new SectionWrite(self, view);
                 controller.focus(function() {
+                    button.removeAttr('disabled');
                     leave();
                 });
             });
@@ -66,11 +85,12 @@
 
         /**
          * Конструктор
+         * @param {ynoApplication} app Представление приложения
          * @param {HTMLElement} section Раздел
          * @constructor
          */
-        function SectionRead(section) {
-            this._section = section;
+        function SectionRead(app, section) {
+            this._app = app; this._section = section;
         }
 
         /**
@@ -96,20 +116,68 @@
 
         /**
          * Конструктор
+         * @param {ynoApplication} app Представление приложения
          * @param {HTMLElement} section Раздел
          * @constructor
          */
-        function SectionWrite(section) {
-            this._section = section;
+        function SectionWrite(app, section) {
+            this._app = app; this._section = section;
+            this._form = this._section.find('form');
+            this._elements = {
+                token: this._form.find('#write-message-token'),
+                refreshButton: this._form.find('#change-token'),
+                messageText: this._form.find('#write-message-text'),
+            };
+            // Тут будем хранить описание токана для отправки сообщения
+            this._token = { value: null, signature: null, expires: null };
+            this._refresh_token(); // Подпишем кнопку обновления токена
         }
+
+        /**
+         * Обрабатывает клик на кнопку "обновить токен"
+         * @private
+         */
+        SectionWrite.prototype._refresh_token = function() {
+            const self = this;
+            this._elements.refreshButton.bind('click', function() {
+                self._elements.refreshButton.attr('disabled', true);
+                self._get_token(function() { // Новое значение
+                    self._elements.refreshButton.removeAttr('disabled');
+                });
+            });
+        };
+
+        /**
+         * Получает и устанавнивает новый токен сообщения
+         * @param {Function} callback Функция обратного вызова
+         * @private
+         */
+        SectionWrite.prototype._get_token = function(callback = null) {
+            const self = this;
+            this._app.api('/token', {}, function(result, error) {
+                switch (error) {
+                    case null:
+                        self._token = result; // Зададим значение
+                        self._elements.token.val(self._token.value);
+                        if (typeof callback === 'function') { callback(); }
+                        break;
+                    default:
+                        break;
+                }
+            });
+        };
 
         /**
          * Готовит и переключает форму отправки
          * @param {Function} callback Обработчик обратного вызова
          */
         SectionWrite.prototype.focus = function(callback) {
-            this._section.show();
-            callback();
+            const self = this;
+            this._get_token(function() {
+                self._section.show();
+                self._elements.messageText.focus();
+                callback();
+            });
         };
 
         return SectionWrite;

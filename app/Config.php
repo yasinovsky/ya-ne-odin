@@ -6,6 +6,7 @@ use Yaseek\YNO\Core\Config as CoreConfig;
 
 /**
  * Конфигурация приложения
+ * @method array token($key = null)
  * @method array environment($key = null)
  * @method array database($key = null)
  * @package Yaseek\YNO\App
