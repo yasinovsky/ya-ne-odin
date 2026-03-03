@@ -4,10 +4,10 @@
 
 {% block content %}
 
-    <div class="py-5 text-center">
+    <div class="py-3 text-center">
         <img class="d-block mx-auto mb-4" src="/resources/logo.svg" width="100" alt="Я не один!">
         <h1 class="h2">Я не один!</h1>
-        <div data-for="lead-text">
+        <div class="mt-3" data-for="lead-text">
             <p class="lead">
                 Иногда бывает трудно говорить о своих чувствах вслух, задать неловкий вопрос или признаться в том, что что-то беспокоит. Это нормально.
                 Мы готовы выслушать тебя без осуждения и оценок. Напиши о том, что у тебя на душе. Ты можешь не указывать своё имя &ndash; для нас главное, чтобы тебе стало легче.
@@ -17,17 +17,51 @@
         </div>
     </div>
 
-    <div class="row mt-3" data-view="main">
+    <div class="row mt-3" data-for="main-buttons">
         <div class="col text-center">
             <button class="btn btn-lg btn-outline-danger mx-3 my-3" data-for="write-message">Написать сообщение</button>
-            <button class="btn btn-lg btn-outline-success mx-3 my-3" data-for="read-message">Прочитать сообщение</button>
+            <button class="btn btn-lg btn-outline-success mx-3 my-3" data-for="read-message">Прочитать ответ</button>
         </div>
     </div>
 
     <div class="row mt-3" data-view="write" style="display: none;">
+        <form>
+            <div class="mb-3">
+                <label for="write-message-token" class="form-label">Ключ сообщения</label>
+                <div class="input-group mb-3">
+                    <input id="write-message-token" type="text" class="form-control" aria-describedby="change-token" disabled>
+                    <button id="change-token" type="button" class="btn btn-outline-secondary">Хочу другой</button>
+                </div>
+                <div class="form-text text-danger">Пожалуйста запомни ключ, без него ты не сможешь прочитать ответ</div>
+            </div>
+            <div class="mb-3">
+                <label for="write-message-text" class="form-label">Текст сообщения</label>
+                <textarea id="write-message-text" class="form-control" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
     </div>
 
     <div class="row mt-3" data-view="read" style="display: none;">
+        <form>
+            <div class="mb-3">
+                <label for="read-message-token" class="form-label">Ключ сообщения</label>
+                <div class="input-group mb-3">
+                    <input id="read-message-token" type="text" class="form-control" aria-describedby="change-token" placeholder="Веди ключ сообщения">
+                    <button id="read-message" type="button" class="btn btn-outline-secondary">Прочитать ответ</button>
+                </div>
+                <div class="form-text text-danger" style="display: none;">Введён неверный ключ сообщения</div>
+            </div>
+        </form>
     </div>
+
+{% endblock %}
+
+
+
+{% block javascript %}
+
+    {{ parent() }}
+    <script>new ynoApplication().main();</script>
 
 {% endblock %}
