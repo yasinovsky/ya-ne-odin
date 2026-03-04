@@ -270,6 +270,9 @@ class Application {
      */
     public static function version() {
         $value = '0.0.1';
+        if (self::config()->environment('production') === false) {
+            $value .= '.' . time(); // Не кешируем статику (js/css)
+        }
         return $value;
     }
 
