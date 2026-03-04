@@ -58,6 +58,20 @@ $router->with('/api', function() use ($router) {
     });
 
     $router->respond(
+        array('POST'), '/conversation',
+        function(KRequest $request, KResponse $response) {
+            $api = new Api($request, $response);
+            $api->process(function() use ($api, $request) {
+                $params = $api->getRequestParams(array(
+                    'thread' => Api::TYPE_STRING,
+                ));
+                $token = Token::getInstance($params['thread']);
+                return $token->conversation(true);
+            });
+        }
+    );
+
+    $router->respond(
         array('POST'), '/signin',
         function(KRequest $request, KResponse $response) {
             $api = new Api($request, $response);
