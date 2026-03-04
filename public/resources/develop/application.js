@@ -78,6 +78,14 @@
             new SignIn(this); // Весьма лаконично :)
         };
 
+        /**
+         * Обработчик ветки сообщений бекофиса
+         * @param {String} uuid Идентификатор ветки
+         */
+        ynoApplication.prototype.thread = function(uuid) {
+            new BackofficeThread(this, uuid);
+        };
+
         return ynoApplication;
 
     })();
@@ -126,6 +134,52 @@
         };
 
         return SignIn;
+
+    })();
+
+
+
+    /**
+     * Представление ветки сообщений бекофиса
+     * @type {BackofficeThread}
+     */
+    const BackofficeThread = (function() {
+
+        /**
+         * Конструктор
+         * @param {ynoApplication} app Представление приложения
+         * @param {String} uuid Идентификатор ветки
+         * @constructor
+         */
+        function BackofficeThread(app, uuid) {
+            this._app = app; this._uuid = uuid;
+            this._form = $('form');
+            this._submit_form();
+        }
+
+        /**
+         * Обрабатывает отправку формы
+         * @private
+         */
+        BackofficeThread.prototype._submit_form = function() {
+            const self = this;
+            const message = this._form.find('#message');
+            const button = this._form.find('button[type="submit"]');
+            this._form.submit(function(event) {
+                event.preventDefault();
+                button.attr('disabled', true);
+                const request = { message: message.val(), thread: self._uuid };
+                self._app.api('/message/insert', request, function(result, error) {
+                    button.removeAttr('disabled');
+                    switch (error) {
+                        case null: window.location.reload(); break;
+                        default: break;
+                    }
+                });
+            });
+        };
+
+        return BackofficeThread;
 
     })();
 

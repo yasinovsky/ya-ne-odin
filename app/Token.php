@@ -124,6 +124,8 @@ class Token {
         return $this->_id;
     }
 
+
+
     /**
      * Возвращает идентификатор uuid
      * @return string
@@ -152,12 +154,25 @@ class Token {
         return $this->_created;
     }
 
+
+
     /**
      * Возвращает заголовок
      * @return string
      */
     public function title() {
         return $this->_title;
+    }
+
+
+
+    /**
+     * Возвращает список сообщений
+     * @return Message[]
+     * @throws \Exception
+     */
+    public function conversation() {
+        return Message::getInstances($this);
     }
 
 

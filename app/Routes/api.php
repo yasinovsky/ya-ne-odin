@@ -42,6 +42,19 @@ $router->with('/api', function() use ($router) {
             }
         );
 
+        $router->respond(
+            array('POST'), '/insert',
+            function(KRequest $request, KResponse $response) {
+                $api = new Api($request, $response);
+                $api->process(function() use ($api, $request) {
+                    return Message::insert($api->getRequestParams(array(
+                        'thread' => Api::TYPE_UUID,
+                        'message' => Api::TYPE_STRING,
+                    )));
+                });
+            }
+        );
+
     });
 
     $router->respond(
