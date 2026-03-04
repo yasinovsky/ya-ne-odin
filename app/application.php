@@ -201,6 +201,16 @@ class Application {
 
 
     /**
+     * Возвращает актёра
+     * @return Actor
+     */
+    public static function actor() {
+        return Actor::getInstance();
+    }
+
+
+
+    /**
      * Возвращает номер версии приложения
      * @return string
      */
@@ -221,6 +231,23 @@ class Application {
             $result = new Logger(self::$_root);
         }
         return $result;
+    }
+
+
+
+    /**
+     * Приостанавливает выполнение на некоторое время
+     * @param string $period Период (fast|medium|slow)
+     * @throws \Exception
+     */
+    public static function randomSleep($period = 'fast') {
+        switch ($period) {
+            case 'fast': $guaranteed = 500000; $random = 125000; break;
+            case 'medium': $guaranteed = 1000000; $random = 500000; break;
+            case 'slow': $guaranteed = 2000000; $random = 750000; break;
+            default: throw new \Exception('Invalid period given');
+        }
+        usleep($guaranteed + rand(0, $random));
     }
 
 
