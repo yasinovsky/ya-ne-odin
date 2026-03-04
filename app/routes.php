@@ -25,6 +25,17 @@ $router->respond(
     }
 );
 
+$router->respond(
+    array('GET'), '/signin',
+    function(KRequest $request, KResponse $response, KService $service, KApp $app) use ($router) {
+        return $app->twig->render(
+            '/pages/signin.twig', array(
+                'application' => Application::getInstance(),
+            )
+        );
+    }
+);
+
 
 
 $router->respond(

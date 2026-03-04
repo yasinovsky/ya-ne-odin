@@ -44,4 +44,25 @@ $router->with('/api', function() use ($router) {
 
     });
 
+    $router->respond(
+        array('POST'), '/signin',
+        function(KRequest $request, KResponse $response) {
+            $api = new Api($request, $response);
+            $api->process(function() use ($api, $request) {
+                $params = $api->getRequestParams(array(
+                    'login' => Api::TYPE_STRING,
+                    'password' => Api::TYPE_STRING,
+                ));
+                $actor = Application::actor(); // Достаем пользователя
+                if ($actor->signIn($params['login'], $params['password'])) {
+                    $session = $actor->session(); // Это просто шорткат
+                    $location = $session->get('return');
+                    $session->delete('return'); // Всё
+                    return isset($location) ? $location : '/';
+                }
+                throw new \Exception('Invalid login and/or password');
+            });
+        }
+    );
+
 });

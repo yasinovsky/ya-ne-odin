@@ -71,7 +71,61 @@
             });
         };
 
+        /**
+         * Обработчик страницы авторизации
+         */
+        ynoApplication.prototype.signin = function() {
+            new SignIn(this); // Весьма лаконично :)
+        };
+
         return ynoApplication;
+
+    })();
+
+
+
+    /**
+     * Представление формы авторизации
+     * @type {SignIn}
+     */
+    const SignIn = (function() {
+
+        /**
+         * Конструктор
+         * @param {ynoApplication} app Представление приложения
+         * @param {HTMLElement} section Раздел
+         * @constructor
+         */
+        function SignIn(app, section) {
+            this._app = app; this._section = $('[data-view="sign-in"]');
+            this._form = this._section.find('form');
+            this._submit_form();
+        }
+
+        /**
+         * Обрабатывает отправку формы
+         * @private
+         */
+        SignIn.prototype._submit_form = function() {
+            const self = this;
+            const login = this._form.find('#login');
+            const password = this._form.find('#password');
+            const button = this._form.find('button[type="submit"]');
+            this._form.submit(function(event) {
+                event.preventDefault();
+                button.attr('disabled', true);
+                const request = { login: login.val(), password: password.val() };
+                self._app.api('/signin', request, function(result, error) {
+                    button.removeAttr('disabled');
+                    switch (error) {
+                        case null: window.location.href = result; break;
+                        default: break;
+                    }
+                });
+            });
+        };
+
+        return SignIn;
 
     })();
 

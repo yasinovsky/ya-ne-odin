@@ -1,0 +1,31 @@
+{% extends "/layouts/default.twig" %}
+
+
+
+{% block content %}
+
+    <div class="py-5 text-center mt-5" data-view="sign-in">
+        <form>
+            <h1 class="h3 mb-3 fw-normal">Необходима авторизация</h1>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="login" placeholder="Логин" required>
+                <label for="login">Логин</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password" placeholder="Пароль" required>
+                <label for="password">Пароль</label>
+            </div>
+            <button class="btn btn-primary w-50 py-2" type="submit">Войти</button>
+        </form>
+    </div>
+
+{% endblock %}
+
+
+
+{% block javascript %}
+
+    {{ parent() }}
+    <script>new ynoApplication().signin();</script>
+
+{% endblock %}
