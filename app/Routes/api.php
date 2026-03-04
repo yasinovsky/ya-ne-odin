@@ -31,10 +31,11 @@ $router->with('/api', function() use ($router) {
             function(KRequest $request, KResponse $response) {
                 $api = new Api($request, $response);
                 $api->process(function() use ($api, $request) {
-                    return Message::insert($api->getRequestParams(array(
+                    return Message::post($api->getRequestParams(array(
                         'token' => Api::TYPE_STRING,
                         'expires' => Api::TYPE_INTEGER,
                         'signature' => Api::TYPE_STRING,
+                        'title' => Api::TYPE_STRING,
                         'message' => Api::TYPE_STRING,
                     )));
                 });
