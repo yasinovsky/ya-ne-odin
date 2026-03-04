@@ -34,6 +34,20 @@ class Token {
 
 
     /**
+     * Дата создания
+     * @var int
+     */
+    private $_created = null;
+
+    /**
+     * Заголовок
+     * @var string
+     */
+    private $_title = null;
+
+
+
+    /**
      * Имя таблицы токенов
      */
     private const TABLE = 'tokens';
@@ -48,6 +62,8 @@ class Token {
         $this->_id = $record['id'];
         $this->_uuid = $record['uuid'];
         $this->_value = $record['value'];
+        $this->_created = $record['created'];
+        $this->_title = $record['title'];
     }
 
 
@@ -61,7 +77,7 @@ class Token {
     public static function getInstance($identifier) {
         $db = Application::database();
         $statement = $db->table(self::TABLE)
-            ->select('id', 'uuid', 'value')
+            ->select('id', 'uuid', 'value', 'created', 'title')
                 ->where('active', 1);
         switch (true) {
             case Helper::isUuid($identifier):
@@ -76,6 +92,26 @@ class Token {
             throw new \Exception('Token not exists');
         }
         return new Token($statement->first());
+    }
+
+
+
+    /**
+     * Возвращает список представлений
+     * @return Token[]
+     * @throws \Exception
+     */
+    public static function threads() {
+        $result = array();
+        $db = Application::database();
+        $statement = $db->table(self::TABLE)
+            ->select('id', 'uuid', 'value', 'created', 'title')
+                ->where('active', 1)
+                ->orderBy('created', 'desc');
+        foreach ($statement->get() as $record) {
+            $result[] = new Token($record);
+        }
+        return $result;
     }
 
 
@@ -106,6 +142,37 @@ class Token {
      */
     public function value() {
         return $this->_value;
+    }
+
+
+
+    /**
+     * Возвращает дату создания
+     * @return int
+     */
+    public function created() {
+        return $this->_created;
+    }
+
+
+
+    /**
+     * Возвращает заголовок
+     * @return string
+     */
+    public function title() {
+        return $this->_title;
+    }
+
+
+
+    /**
+     * Возвращает список сообщений
+     * @return Message[]
+     * @throws \Exception
+     */
+    public function conversation() {
+        return Message::getInstances($this);
     }
 
 

@@ -4,8 +4,29 @@
 
 {% block content %}
 
-    <div class="text-center mt-5">
-        welcome to backoffice!
+    <div class="mt-5">
+        <table class="table table-hover w-100">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Дата создания</th>
+                    <th scope="col">Заголовок</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for thread in threads %}
+                    <tr>
+                        <th scope="row">{{ thread.id() }}</th>
+                        <td>{{ thread.created() | formatDate }}</td>
+                        <td>
+                            <a href="/backoffice/thread/{{ thread.uuid() }}">
+                                {{ thread.title() }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
 {% endblock %}

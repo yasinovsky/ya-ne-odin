@@ -5,6 +5,8 @@ use Klein\Request as KRequest;
 use Klein\Response as KResponse;
 use Klein\ServiceProvider as KService;
 
+use Yaseek\YNO\Core\Helper;
+
 
 
 /**
@@ -27,6 +29,24 @@ $router->with('/backoffice', function() use ($router) {
             }
             return $app->twig->render(
                 '/pages/backoffice.twig', array(
+                    'threads' => Token::threads(),
+                    'application' => Application::getInstance(),
+                )
+            );
+        }
+    );
+
+    $router->respond(
+        array('GET'), '/thread/[s:uuid]',
+        function(KRequest $request, KResponse $response, KService $service, KApp $app) {
+            $actor = Application::actor();
+            if ($actor->authenticated() === false) { // Тут проще
+                throw new \Exception('Forbidden', 403);
+            }
+            $identifier = Helper::castUuid($request->uuid);
+            return $app->twig->render(
+                '/pages/backoffice/thread.twig', array(
+                    'thread' => Token::getInstance($identifier),
                     'application' => Application::getInstance(),
                 )
             );

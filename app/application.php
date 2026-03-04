@@ -125,11 +125,65 @@ class Application {
                             ? array('cache' => $root . '/temp/templates')
                             : array()
                     );
+                    $twig->addFilter(
+                        'formatDate', // Добавим фильтр, форматирующий дату
+                        new \Twig\TwigFilter('formatDate', function($context, $string) {
+                            return self::_format_date($string);
+                        }, array('needs_context' => true))
+                    );
                     return $twig;
                 });
             }
         }
         return $result;
+    }
+
+
+
+    /**
+     * Возвращает timestamp по дате
+     * @param string $value Значение
+     * @return int
+     * @throws \Exception
+     */
+    private static function _timestamp($value) {
+        $date = new \DateTime($value);
+        return $date->getTimestamp();
+    }
+
+
+
+    /**
+     * Возвращает отформатированную дату
+     * @param int|string $date Дата или timestamp
+     * @return string
+     * @throws \Exception
+     */
+    private static function _format_date($date) {
+        static $current_year = null; // Разберемся с текущим годом
+        if (is_null($current_year)) { $current_year = date('Y'); }
+        // Теперь получим timestamp, если он не передан сюда явно
+        $stamp = is_numeric($date) ? $date : self::_timestamp($date);
+        switch (date('m', $stamp)) {
+            case 1: $month = 'января'; break;
+            case 2: $month = 'февраля'; break;
+            case 3: $month = 'марта'; break;
+            case 4: $month = 'апреля'; break;
+            case 5: $month = 'мая'; break;
+            case 6: $month = 'июня'; break;
+            case 7: $month = 'июля'; break;
+            case 8: $month = 'августа'; break;
+            case 9: $month = 'сентября'; break;
+            case 10: $month = 'октября'; break;
+            case 11: $month = 'ноября'; break;
+            case 12: $month = 'декабря'; break;
+        }
+        $year = date('Y', $stamp); // Получим год и сравним его с текущим
+        $year = ($year === $current_year) ? '' : ' ' . $year; // ... красиво!
+        // Разберемся со временем, вполне возможно, что его не нужно выводить
+        $time = date('G:i', $stamp); if ($time === '0:00') { $time = null; }
+        return date('j', $stamp) . ' ' . $month . $year
+            . (is_null($time) ? '' : ', ' . $time);
     }
 
 

@@ -1,0 +1,46 @@
+{% extends "/layouts/default.twig" %}
+
+
+
+{% block content %}
+
+    <div class="mt-5">
+        <h2 class="mb-3">{{ thread.title() }}</h2>
+
+        {% for message in thread.conversation() %}
+            {% set actor = message.actor() %}
+            <div class="card mb-3{% if actor %} text-end{% endif %}">
+                <div class="card-header">
+                    {{ message.created() | formatDate }}
+                    {% if actor %}
+                        <span class="badge text-bg-danger">{{ actor.name() }}</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ message.value() }}</p>
+
+                </div>
+            </div>
+
+
+        {% endfor %}
+
+        <form>
+            <div class="mb-3">
+                <label for="message" class="form-label">Добавить сообщение</label>
+                <textarea id="message" class="form-control" rows="4" maxlength="8192" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+    </div>
+
+{% endblock %}
+
+
+
+{% block javascript %}
+
+    {{ parent() }}
+    <script>new ynoApplication().thread('{{ thread.uuid() }}');</script>
+
+{% endblock %}
