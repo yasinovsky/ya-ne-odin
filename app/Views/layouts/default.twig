@@ -4,16 +4,18 @@
 
 {% block body %}
 
-    <body class="bg-body-tertiary">
-        <div class="container">
-            <main>
+    <body class="bg-body-tertiary d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            <div class="container">
                 {% block content %}{% endblock %}
-            </main>
-            <footer class="my-2 pt-5 text-body-secondary text-center text-small">
-                <p class="mb-1">
+            </div>
+        </main>
+        <footer class="footer mt-auto">
+            <div class="container text-center">
+                <span class="text-body-secondary">
                     &copy; 2025&ndash;{{ 'now'|date('Y') }}
                     Анжелика Ясиновская и Ева Баскакова
-                </p>
+                </span>
                 <ul class="list-inline">
                     <li class="list-inline-item">
                         <a href="/backoffice" class="text-decoration-none text-muted opacity-25">
@@ -21,8 +23,8 @@
                         </a>
                     </li>
                 </ul>
-            </footer>
-        </div>
+            </div>
+        </footer>
     </body>
 
 {% endblock %}
@@ -38,5 +40,5 @@
 
 {% block javascript %}
     {{ parent() }}
-    <script src="/resources/application.js"></script>
+    <script src="/resources/develop/application.js"></script>
 {% endblock %}
