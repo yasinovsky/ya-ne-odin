@@ -53,17 +53,44 @@
     </div>
 
     <div class="row mt-3" data-view="read" style="display: none;">
-        <form>
+        <form data-for="token">
             <div class="mb-3">
-                <label for="read-message-token" class="form-label">Ключ сообщения</label>
+                <label for="read-message-token" class="form-label">Ключ</label>
                 <div class="input-group mb-3">
-                    <input id="read-message-token" type="text" class="form-control form-control-lg" aria-describedby="change-token" placeholder="Веди ключ сообщения">
-                    <button id="read-message" type="button" class="btn btn-outline-secondary">Прочитать ответ</button>
+                    <input id="read-message-token" type="text" class="form-control form-control-lg" aria-describedby="change-token" placeholder="Веди ключ сообщения" required>
+                    <button id="read-message" type="submit" class="btn btn-outline-secondary">Прочитать ответ</button>
                 </div>
-                <div class="form-text text-danger" style="display: none;">Введён неверный ключ сообщения</div>
+                <div class="form-text text-danger" data-for="error" style="display: none;">Введён неверный ключ сообщения</div>
             </div>
         </form>
+        <div class="mb-3">
+            <h2 class="mb-3" data-for="conversation-title"></h2>
+            <div data-for="conversation-messages"></div>
+        </div>
+        <form data-for="message" style="display: none;">
+            <div class="mb-3">
+                <label for="message" class="form-label">Добавить сообщение</label>
+                <textarea id="message" class="form-control" rows="4" maxlength="8192" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
     </div>
+
+    {% verbatim %}
+        <script id="message-template" type="text/x-handlebars-template">
+            <div class="card mb-3{{#unless actor}} text-end{{/unless}}">
+                <div class="card-header">
+                    {{ created }}
+                    {{#if actor}}
+                        <span class="badge text-bg-danger">{{ actor }}</span>
+                    {{/if}}
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ value }}</p>
+                </div>
+            </div>
+        </script>
+    {% endverbatim %}
 
 {% endblock %}
 
@@ -72,6 +99,7 @@
 {% block javascript %}
 
     {{ parent() }}
+    <script src="/vendor/handlebars-4.7.8/handlebars.min.js"></script>
     <script>new ynoApplication().main();</script>
 
 {% endblock %}

@@ -72,6 +72,15 @@
         };
 
         /**
+         * Возвращает шаблон Handlebars
+         * @param {string} name Имя шаблона
+         * @return {Function}
+         */
+        ynoApplication.prototype.hbTemplate = function(name) {
+            return Handlebars.compile($('#' + name).html());
+        };
+
+        /**
          * Обработчик страницы авторизации
          */
         ynoApplication.prototype.signin = function() {
@@ -168,7 +177,7 @@
             this._form.submit(function(event) {
                 event.preventDefault();
                 button.attr('disabled', true);
-                const request = { message: message.val(), thread: self._uuid };
+                const request = { message: message.val(), thread: self._uuid, actor: true };
                 self._app.api('/message/insert', request, function(result, error) {
                     button.removeAttr('disabled');
                     switch (error) {
@@ -199,7 +208,95 @@
          */
         function SectionRead(app, section) {
             this._app = app; this._section = section;
+            this._forms = {
+                token: this._section.find('form[data-for="token"]'),
+                message: this._section.find('form[data-for="message"]'),
+            };
+            this._conversation = {
+                title: this._section.find('[data-for="conversation-title"]'),
+                container: this._section.find('[data-for="conversation-messages"]'),
+                template: this._app.hbTemplate('message-template'),
+            };
+            this._thread = null;
+            this._get_conversation();
+            this._send_message();
         }
+
+        /**
+         * Загружает сообщения токена
+         * @param {String} thread Идентификатор токена
+         * @private
+         */
+        SectionRead.prototype._load_conversation = function(thread) {
+            const self = this;
+            const request = { thread: thread };
+            const displayError = function(value) {
+                const block = self._forms.token.find('[data-for="error"]');
+                switch (value) {
+                    case true: block.show(); self._forms.message.hide(); break;
+                    case false: block.hide(); self._forms.message.show(); break;
+                }
+            };
+            self._app.api('/conversation', request, function(result, error) {
+                self._conversation.container.html('');
+                switch (error) {
+                    case null:
+                        displayError(false);
+                        self._thread = result['uuid'];
+                        self._conversation.title.html(result['title']);
+                        Object.keys(result['messages']).forEach(function(id) {
+                            const element = $(self._conversation.template(result['messages'][id]));
+                            self._conversation.container.append(element);
+                        });
+                        break;
+                    default:
+                        displayError(true);
+                        self._thread = null;
+                        self._conversation.title.html('');
+                        break;
+                }
+            });
+        };
+
+        /**
+         * Обрабатывает форму загрузки сообщений
+         * @private
+         */
+        SectionRead.prototype._get_conversation = function() {
+            const self = this;
+            const input = this._forms.token.find('#read-message-token');
+            this._forms.token.submit(function(event) {
+                event.preventDefault();
+                const token = input.val();
+                self._load_conversation(token);
+            });
+        };
+
+        /**
+         * Обрабатывает форму отправки сообщения
+         * @private
+         */
+        SectionRead.prototype._send_message = function() {
+            const self = this;
+            const form = this._forms.message;
+            const input = form.find('#message');
+            const button = form.find('button[type="submit"]');
+            form.submit(function(event) {
+                event.preventDefault(); button.attr('disabled', true);
+                const request = { thread: self._thread, message: input.val() };
+                self._app.api('/message/insert', request, function(result, error) {
+                    button.removeAttr('disabled');
+                    switch (error) {
+                        case null:
+                            input.val(''); // Сбросим значение
+                            self._load_conversation(self._thread);
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            });
+        };
 
         /**
          * Готовит и переключает форму отправки
@@ -207,6 +304,7 @@
          */
         SectionRead.prototype.focus = function(callback) {
             this._section.show();
+            this._forms.token.find('#read-message-token').focus();
             callback();
         };
 

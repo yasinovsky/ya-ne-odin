@@ -6,7 +6,6 @@
 
     <div class="mt-5">
         <h2 class="mb-3">{{ thread.title() }}</h2>
-
         {% for message in thread.conversation() %}
             {% set actor = message.actor() %}
             <div class="card mb-3{% if actor %} text-end{% endif %}">
@@ -21,10 +20,7 @@
 
                 </div>
             </div>
-
-
         {% endfor %}
-
         <form>
             <div class="mb-3">
                 <label for="message" class="form-label">Добавить сообщение</label>

@@ -128,7 +128,7 @@ class Application {
                     $twig->addFilter(
                         'formatDate', // Добавим фильтр, форматирующий дату
                         new \Twig\TwigFilter('formatDate', function($context, $string) {
-                            return self::_format_date($string);
+                            return self::formatDate($string);
                         }, array('needs_context' => true))
                     );
                     return $twig;
@@ -159,7 +159,7 @@ class Application {
      * @return string
      * @throws \Exception
      */
-    private static function _format_date($date) {
+    public static function formatDate($date) {
         static $current_year = null; // Разберемся с текущим годом
         if (is_null($current_year)) { $current_year = date('Y'); }
         // Теперь получим timestamp, если он не передан сюда явно

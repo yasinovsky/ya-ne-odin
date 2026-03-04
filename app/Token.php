@@ -168,11 +168,36 @@ class Token {
 
     /**
      * Возвращает список сообщений
+     * @param bool $json Вернуть в виде массива
      * @return Message[]
      * @throws \Exception
      */
-    public function conversation() {
-        return Message::getInstances($this);
+    public function conversation($json = false) {
+        $messages = Message::getInstances($this);
+        switch ($json) {
+            case true:
+                $result = array(
+                    'uuid' => $this->_uuid,
+                    'title' => $this->_title,
+                    'messages' => array(),
+                );
+                foreach ($messages as &$message) {
+                    $actor = $message->actor();
+                    $record = array(
+                        'uuid' => $message->uuid(),
+                        'created' => Application::formatDate($message->created()),
+                        'value' => $message->value(),
+                        'actor' => isset($actor)
+                            ? $actor->name() : null,
+                    );
+                    $result['messages'][] = $record;
+                }
+                break;
+            default:
+                $result = $messages;
+                break;
+        }
+        return $result;
     }
 
 
