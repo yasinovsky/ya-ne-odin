@@ -1,0 +1,24 @@
+<!doctype html>
+<html class="h-100" lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Я не один!</title>
+        {% block stylesheet %}
+            <link href="/vendor/bootstrap-5.3.8/css/bootstrap.min.css" rel="stylesheet">
+            <link href="/resources/sticky-footer.css" rel="stylesheet">
+        {% endblock %}
+        <link rel="icon" href="/favicon.ico">
+        <link rel="icon" href="/resources/favicon/favicon.svg" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="/resources/favicon/apple-touch-icon.png">
+        <link rel="manifest" href="/resources/manifest.json">
+  </head>
+
+    {% block body %}{% endblock %}
+
+    {% block javascript %}
+        <script src="/vendor/jquery-3.7.1/jquery.min.js"></script>
+        <script src="/vendor/bootstrap-5.3.8/js/bootstrap.min.js"></script>
+    {% endblock %}
+
+</html>

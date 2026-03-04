@@ -1,0 +1,37 @@
+{
+    "database": {
+        "master": {
+            "driver": "mysql",
+            "host": "localhost",
+            "database": "yno_stage",
+            "username": "root",
+            "password": "",
+            "charset": "utf8",
+            "collation": "utf8_general_ci"
+        }
+    },
+    "token": {
+        "lifetime": 5400,
+        "vowels": "aeiouy",
+        "consonants": "bcdfghjklmnpqrstvwxz",
+        "syllables": 4,
+        "signature": {
+            "digest": "{%SALT%}{%VALUE%}{%EXPIRES%}",
+            "salt": "CPXXqx8iMbZ3ADqGg4yUFLlTSzIntPUFJxcfesq3z4fpzs3t8xE4dlefE043Ohoh",
+            "algorithm": "sha1"
+        }
+    },
+    "session": {
+        "driver": "database",
+        "name": "token",
+        "lifetime": 28800,
+        "secure": false,
+        "http-only": true
+    },
+    "environment": {
+        "production": false,
+        "hostname": "yno.stage.yaseek.net",
+        "url": "http://yno.stage.yaseek.net",
+        "urn": "yaseek/yno"
+    }
+}
