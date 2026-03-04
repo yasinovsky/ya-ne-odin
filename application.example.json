@@ -21,6 +21,13 @@
             "algorithm": "sha1"
         }
     },
+    "session": {
+        "driver": "database",
+        "name": "token",
+        "lifetime": 28800,
+        "secure": false,
+        "http-only": true
+    },
     "environment": {
         "production": false,
         "hostname": "yno.stage.yaseek.net",

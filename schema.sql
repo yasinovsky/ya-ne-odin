@@ -14,6 +14,22 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+-- Dumping structure for table yno_stage.actors
+CREATE TABLE IF NOT EXISTS `actors` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` char(36) NOT NULL,
+  `active` tinyint(3) unsigned NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `login` varchar(32) NOT NULL,
+  `password` char(60) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uuid` (`uuid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Dumping data for table yno_stage.actors: ~1 rows (approximately)
+INSERT INTO `actors` (`id`, `uuid`, `active`, `name`, `login`, `password`) VALUES
+	(1, 'fcb68880-8d82-4085-8122-636d6b9d2849', 0, 'Администратор', 'admin', '$2a$12$BZ3TFbLIsBLaqRTkCFfq8O66AkGRjHW87QP7IXzgRktYJRD0b6zRa');
+
 -- Dumping structure for table yno_stage.messages
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -28,6 +44,16 @@ CREATE TABLE IF NOT EXISTS `messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Dumping data for table yno_stage.messages: ~0 rows (approximately)
+
+-- Dumping structure for table yno_stage.sessions
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `token` char(64) NOT NULL,
+  `expires` int(10) unsigned NOT NULL,
+  `data` text NOT NULL,
+  PRIMARY KEY (`token`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Dumping data for table yno_stage.sessions: ~0 rows (approximately)
 
 -- Dumping structure for table yno_stage.tokens
 CREATE TABLE IF NOT EXISTS `tokens` (

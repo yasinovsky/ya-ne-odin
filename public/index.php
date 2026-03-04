@@ -11,6 +11,7 @@ $router = App\Application::router();
 // Включаем роуты нашего приложения
 require($root . '/app/routes.php');
 require($root . '/app/Routes/api.php');
+require($root . '/app/Routes/backoffice.php');
 
 
 
