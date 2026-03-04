@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `tokens` (
   `value` varchar(16) NOT NULL,
   `active` tinyint(3) unsigned NOT NULL,
   `created` int(10) unsigned NOT NULL,
+  `title` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   UNIQUE KEY `value` (`value`)

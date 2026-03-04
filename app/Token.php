@@ -194,13 +194,14 @@ class Token {
 
     /**
      * Добавляет новый токен и возвращает его представление
+     * @param string $title Заголовок
      * @param string $value Значение
      * @param int $expires Дата устаревания
      * @param string $signature Подпись
      * @return Token
      * @throws \Exception
      */
-    public static function insert($value, $expires, $signature) {
+    public static function insert($title, $value, $expires, $signature) {
         $time = time(); // Единожды получим время
         $config = Application::config()->token();
         $calculated = self::_get_token_signature(
@@ -221,7 +222,7 @@ class Token {
             function() { return Helper::getUuid(); },
             array( // Необходимое и достаточное
                 'value' => $value, 'active' => 1,
-                'created' => $time,
+                'created' => $time, 'title' => $title,
             ),
             true
         );

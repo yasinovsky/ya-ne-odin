@@ -126,6 +126,7 @@
             this._elements = {
                 token: this._form.find('#write-message-token'),
                 refreshButton: this._form.find('#change-token'),
+                messageTitle: this._form.find('#write-message-title'),
                 messageText: this._form.find('#write-message-text'),
             };
             // Тут будем хранить описание токана для отправки сообщения
@@ -186,8 +187,9 @@
                 Object.keys(keys).forEach(function(id) {
                     result[keys[id]] = self._token[keys[id]];
                 });
-                // Ну и осталось добавить непосредственно сам текст
-                result['message'] = self._elements.messageText.val()
+                // Ну и осталось добавить только заголовок и текст
+                result['title'] = self._elements.messageTitle.val();
+                result['message'] = self._elements.messageText.val();
                 return result;
             };
             const successResult = function() {
@@ -238,7 +240,7 @@
             const self = this;
             this._get_token(function() {
                 self._section.show();
-                self._elements.messageText.focus();
+                self._elements.messageTitle.focus();
                 callback();
             });
         };

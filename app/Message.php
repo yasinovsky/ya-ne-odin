@@ -24,31 +24,34 @@ class Message {
      * Приводит текст сообщения
      * @param string $value Текст сообщения
      * @param int $length Максимальная длинна
-     * @return string
+     * @return string|null
      */
-    private static function _cast_message($value, $length = 8192) {
+    private static function _cast_text($value, $length) {
         $value = mb_substr(strval($value), 0, $length);
-        $value = htmlspecialchars(strip_tags($value));
-        return trim($value);
+        $value = trim(htmlspecialchars(strip_tags($value)));
+        return $value === '' ? null : $value;
     }
 
 
 
     /**
-     * Добавляет новое сообшение
+     * Добавляет новый токен и сообшение
      * @param array $request Запрос
      * @return bool
      * @throws \Exception
      */
-    public static function insert($request) {
+    public static function post($request) {
         $db = Application::database();
-        $message = self::_cast_message($request['message']);
-        if ($message === '') { // На всякий случай проверим текст
+        if (!$title = self::_cast_text($request['title'], 255)) {
+            throw new \Exception('Empty title given');
+        }
+        if (!$message = self::_cast_text($request['message'], 8192)) {
             throw new \Exception('Empty message given');
         }
         try {
             $db->beginTransaction();
             $token = Token::insert(
+                $title, // Заголовок нашего сообщения
                 $request['token'], $request['expires'],
                 $request['signature'], // + Подпись!
             );
