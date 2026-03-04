@@ -196,12 +196,20 @@ class Message {
 
 
 
+    /**
+     * Добавляет новое сообшение
+     * @param array $request Запрос
+     * @return bool
+     * @throws \Exception
+     */
     public static function insert($request) {
         $db = Application::database();
         if (!$message = self::_cast_text($request['message'], 8192)) {
             throw new \Exception('Empty message given');
         }
-        $actor = Application::actor();
+        // Проверим, нужно ли нам подставлять пользователя. Это нужно для бекофиса
+        $actor = array_key_exists('actor', $request) && $request['actor'] === true
+            ? Application::actor() : null;
         $token = Token::getInstance($request['thread']);
         $id = Database::insertUniqueRow(
             $db, self::TABLE, 'uuid',
@@ -209,7 +217,7 @@ class Message {
             array( // Необходимое и достаточное
                 'token_id' => $token->id(),
                 'value' => $message, 'created' => time(),
-                'actor_id' => $actor->authenticated()
+                'actor_id' => isset($actor) && $actor->authenticated()
                     ? $actor->id() : null // Пользователь
             ),
             true
