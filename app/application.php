@@ -269,7 +269,7 @@ class Application {
      * @return string
      */
     public static function version() {
-        $value = '0.0.1';
+        $value = '1.0.0';
         if (self::config()->environment('production') === false) {
             $value .= '.' . time(); // Не кешируем статику (js/css)
         }
