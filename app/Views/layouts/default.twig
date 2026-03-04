@@ -33,12 +33,12 @@
 
 {% block stylesheet %}
     {{ parent() }}
-    <link href="/resources/application.css" rel="stylesheet">
+    <link href="/resources/application.css?v={{ application.version() }}" rel="stylesheet">
 {% endblock %}
 
 
 
 {% block javascript %}
     {{ parent() }}
-    <script src="/resources/develop/application.js"></script>
+    <script src="/resources/application.js?v={{ application.version() }}"></script>
 {% endblock %}
