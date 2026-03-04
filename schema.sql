@@ -29,6 +29,16 @@ CREATE TABLE IF NOT EXISTS `messages` (
 
 -- Dumping data for table yno_stage.messages: ~0 rows (approximately)
 
+-- Dumping structure for table yno_stage.sessions
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `token` char(64) NOT NULL,
+  `expires` int(10) unsigned NOT NULL,
+  `data` text NOT NULL,
+  PRIMARY KEY (`token`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Dumping data for table yno_stage.sessions: ~0 rows (approximately)
+
 -- Dumping structure for table yno_stage.tokens
 CREATE TABLE IF NOT EXISTS `tokens` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
