@@ -16,19 +16,19 @@ class Actor {
      * Идентификатор актёра
      * @var null|int
      */
-    private $_id = null;
+    protected $_id = null;
 
     /**
      * UUID актёра
      * @var null|string
      */
-    private $_uuid = null;
+    protected $_uuid = null;
 
     /**
      * Имя акёра
      * @var null|string
      */
-    private $_name = null;
+    protected $_name = null;
 
 
 
@@ -43,7 +43,7 @@ class Actor {
     /**
      * Имя таблицы с актёрами
      */
-    private const TABLE = 'actors';
+    protected const TABLE = 'actors';
 
 
 
