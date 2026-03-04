@@ -27,6 +27,7 @@ $router->with('/backoffice', function() use ($router) {
             }
             return $app->twig->render(
                 '/pages/backoffice.twig', array(
+                    'threads' => Token::threads(),
                     'application' => Application::getInstance(),
                 )
             );
