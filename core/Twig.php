@@ -4,7 +4,7 @@
 
 /**
  * Представление конфигурации Twig
- * @package DL\Nauka\Core
+ * @package Yaseek\YNO\Core
  */
 class Twig extends \Twig_Environment {
 
