@@ -35,11 +35,14 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` char(36) NOT NULL,
   `token_id` int(10) unsigned NOT NULL,
+  `actor_id` int(10) unsigned DEFAULT NULL,
   `value` text NOT NULL,
   `created` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   KEY `FK_messages_tokens` (`token_id`),
+  KEY `FK_messages_actors` (`actor_id`),
+  CONSTRAINT `FK_messages_actors` FOREIGN KEY (`actor_id`) REFERENCES `actors` (`id`),
   CONSTRAINT `FK_messages_tokens` FOREIGN KEY (`token_id`) REFERENCES `tokens` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
