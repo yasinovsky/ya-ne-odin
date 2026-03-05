@@ -121,7 +121,7 @@ class Message {
 
 
     /**
-     * Возвращает
+     * Возвращает сообщения токена
      * @param Token $thread
      * @return Message[]
      * @throws \Exception
@@ -156,7 +156,7 @@ class Message {
 
 
     /**
-     * Добавляет новый токен и сообшение
+     * Добавляет новый токен и сообщение
      * @param array $request Запрос
      * @return bool
      * @throws \Exception
@@ -197,7 +197,7 @@ class Message {
 
 
     /**
-     * Добавляет новое сообшение
+     * Добавляет новое сообщение
      * @param array $request Запрос
      * @return bool
      * @throws \Exception

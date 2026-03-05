@@ -4,8 +4,9 @@
 
 {% block content %}
 
-    <div class="py-5 text-center mt-5" data-view="sign-in">
-        <form>
+    <div class="py-3 text-center" data-view="sign-in">
+        {% include "/elements/header-logo.twig" %}
+        <form class="mt-5">
             <h1 class="h3 mb-3 fw-normal">Необходима авторизация</h1>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="login" placeholder="Логин" required>

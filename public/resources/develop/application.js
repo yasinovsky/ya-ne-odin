@@ -304,7 +304,8 @@
          */
         SectionRead.prototype.focus = function(callback) {
             this._section.show();
-            this._forms.token.find('#read-message-token').focus();
+            // @todo На мобилке очень некрасиво выскакивает клавиатура
+            // this._forms.token.find('#read-message-token').focus();
             callback();
         };
 
